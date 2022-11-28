@@ -17,7 +17,7 @@ import com.example.lugares_j.viewmodel.LugarViewModel
 
 class AddLugarFragment : Fragment() {
 
-    //objeto que interactuca con la tabla
+    //objeto que interactua con la tabla
     private  lateinit var lugarViewModel: LugarViewModel
 
     private var _binding: FragmentAddLugarBinding? = null
@@ -44,7 +44,7 @@ class AddLugarFragment : Fragment() {
             val correo=binding.etCorreo.text.toString() //obtienen el texto de lo que el usuario escribio
             val telefono=binding.etTelefono.text.toString() //obtienen el texto de lo que el usuario escribio
             val web=binding.etWeb.text.toString() //obtienen el texto de lo que el usuario escribio
-            val lugar = Lugar(0,nombre,correo,telefono,web,0.0,0.0,0.0,
+            val lugar = Lugar("",nombre,correo,telefono,web,0.0,0.0,0.0,
                 "","")
 
             //se procede a registrar el nuevo lugar

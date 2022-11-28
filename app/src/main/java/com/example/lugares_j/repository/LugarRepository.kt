@@ -1,24 +1,19 @@
 package com.example.lugares_j.repository
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.lugares_j.data.LugarDao
 import com.example.lugares_j.model.Lugar
 
 class LugarRepository(private val lugarDao: LugarDao) {
 
-    suspend fun saveLugar(lugar: Lugar){
-        if(lugar.id==0){//es un lugar nuevo
-            lugarDao.addLugar(lugar)
-        }else{ //es un lugar ya registrado
-            lugarDao.udpateLugar(lugar)
-        }
+    fun saveLugar(lugar: Lugar){
+        lugarDao.saveLugar(lugar)
     }
 
-    suspend fun deleteLugar(lugar: Lugar){
-        if(lugar.id!=0) {//si un ID tiene un valor lo intento eliminar
-            lugarDao.deleteLugar(lugar)
-        }
+    fun deleteLugar(lugar: Lugar){
+        lugarDao.deleteLugar(lugar)
+
     }
 
-    val getLugares : LiveData<List<Lugar>> = lugarDao.getLugares()
+    val getLugares : MutableLiveData<List<Lugar>> = lugarDao.getLugares()
 }

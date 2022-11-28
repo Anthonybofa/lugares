@@ -13,13 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.lugares_j.R
-import com.example.lugares_j.databinding.FragmentAddLugarBinding
-import com.example.lugares_j.databinding.FragmentLugarBinding
 import com.example.lugares_j.databinding.FragmentUpdateLugarBinding
 import com.example.lugares_j.model.Lugar
 import com.example.lugares_j.viewmodel.LugarViewModel
 
 class UpdateLugarFragment : Fragment() {
+
 
     //se define un obketo para obtener los argumentos pasados al fragmento
     private val args by navArgs<UpdateLugarFragmentArgs>()
