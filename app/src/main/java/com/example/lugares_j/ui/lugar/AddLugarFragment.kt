@@ -1,5 +1,8 @@
 package com.example.lugares_j.ui.lugar
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +16,8 @@ import com.example.lugares_j.databinding.FragmentAddLugarBinding
 import com.example.lugares_j.databinding.FragmentLugarBinding
 import com.example.lugares_j.model.Lugar
 import com.example.lugares_j.viewmodel.LugarViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 
 class AddLugarFragment : Fragment() {
@@ -34,7 +39,37 @@ class AddLugarFragment : Fragment() {
 
         binding.btAdd.setOnClickListener{ addLugar() }
 
+        ubicaGPS()
+
         return binding.root
+    }
+
+    private fun ubicaGPS(){
+       if(requireActivity().
+               checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)!=
+               PackageManager.PERMISSION_GRANTED
+           && requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)!=
+               PackageManager.PERMISSION_GRANTED){
+           //si estamos aca hay que pedir auytorizacion para hacer la ubicacion gps
+           requireActivity().requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+           Manifest.permission.ACCESS_FINE_LOCATION),105)
+       }else{
+           //si se tienen los permisoso se busca la ubicacion GPS
+           val ubicacion:FusedLocationProviderClient =
+               LocationServices.getFusedLocationProviderClient(requireContext())
+           ubicacion.lastLocation.addOnSuccessListener {
+                location: Location? ->
+               if(location != null){
+                   binding.tvLatitud.text = "${location.latitude}"
+                   binding.tvLongitud.text = "${location.longitude}"
+                   binding.tvAltura.text = "${location.altitude}"
+               }else{
+                    binding.tvLatitud.text = "0.0"
+                    binding.tvLongitud.text = "0.0"
+                    binding.tvAltura.text = "0.0"
+               }
+           }
+       }
     }
 
     private fun addLugar() {
@@ -44,7 +79,10 @@ class AddLugarFragment : Fragment() {
             val correo=binding.etCorreo.text.toString() //obtienen el texto de lo que el usuario escribio
             val telefono=binding.etTelefono.text.toString() //obtienen el texto de lo que el usuario escribio
             val web=binding.etWeb.text.toString() //obtienen el texto de lo que el usuario escribio
-            val lugar = Lugar("",nombre,correo,telefono,web,0.0,0.0,0.0,
+            val latitud = binding.tvLatitud.text.toString().toDouble()
+            val longitud = binding.tvLongitud.text.toString().toDouble()
+            val altura = binding.tvAltura.text.toString().toDouble()
+            val lugar = Lugar("",nombre,correo,telefono,web,latitud,longitud,altura,
                 "","")
 
             //se procede a registrar el nuevo lugar

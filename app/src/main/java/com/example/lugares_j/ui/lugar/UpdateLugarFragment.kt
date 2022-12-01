@@ -1,7 +1,9 @@
 package com.example.lugares_j.ui.lugar
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -72,7 +74,21 @@ class UpdateLugarFragment : Fragment() {
     }
 
     private fun llamarLugar() {
-        TODO("Not yet implemented")
+        val telefono = binding.etTelefono.text
+        if(telefono.isNotEmpty()){
+            val dialIntent = Intent(Intent.ACTION_CALL)
+            dialIntent.data= Uri.parse("tel:$telefono")
+            if(requireActivity().checkSelfPermission(Manifest.permission.CALL_PHONE) !=
+                    PackageManager.PERMISSION_GRANTED){
+                requireActivity().requestPermissions(arrayOf(Manifest.permission.CALL_PHONE),
+                    105)
+            }else{
+                requireActivity().startActivity(dialIntent)
+            }
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.msg_data),Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun enviarWhatsapp() {
@@ -103,7 +119,15 @@ class UpdateLugarFragment : Fragment() {
     }
 
     private fun verEnMapa() {
-        TODO("Not yet implemented")
+        val latitud=binding.tvLatitud.text.toString().toDouble()
+        val longitud=binding.tvLongitud.text.toString().toDouble()
+        if(latitud.isFinite() && longitud.isFinite()){
+            val location = Uri.parse("geo:$latitud,$longitud?z=18")
+            val mapIntent = Intent(Intent.ACTION_VIEW, location)
+            startActivity(mapIntent)
+        } else {
+            Toast.makeText(requireContext(),getString(R.string.msg_data),Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun deleteLugar() {
