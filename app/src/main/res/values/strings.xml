@@ -57,4 +57,5 @@
     <string name="msg_detener_audio">Nota de audio detenida</string>
     <string name="msg_subiendo_audio">Subiendo Nota Audio</string>
     <string name="msg_subiendo_imagen">Subiendo imagen</string>
+    <string name="msg_subiendo_lugar">Subiendo el lugar</string>
 </resources>

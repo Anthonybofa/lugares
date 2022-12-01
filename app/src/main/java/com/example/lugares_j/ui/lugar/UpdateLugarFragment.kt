@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.lugares_j.R
 import com.example.lugares_j.databinding.FragmentUpdateLugarBinding
 import com.example.lugares_j.model.Lugar
@@ -30,6 +32,9 @@ class UpdateLugarFragment : Fragment() {
 
     private var _binding: FragmentUpdateLugarBinding? = null
     private val binding get() = _binding!!
+
+    //Objeto mediaPlayer para eswcuchar audio desde la nube
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +60,22 @@ class UpdateLugarFragment : Fragment() {
         binding.btWhatsapp.setOnClickListener{ enviarWhatsapp() }
         binding.btWeb.setOnClickListener{ verWeb() }
         binding.btLocation.setOnClickListener{ verEnMapa() }
+
+        if(args.lugar.rutaAudio?.isNotEmpty()==true){
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(args.lugar.rutaAudio)
+            mediaPlayer.prepare()
+            binding.btPlay.isEnabled=true
+        }else{
+            binding.btPlay.isEnabled=false
+
+        }
+        binding.btPlay.setOnClickListener{  mediaPlayer.start() }
+
+        if(args.lugar.rutaImagen?.isNotEmpty()==true){
+            Glide.with(requireContext()).load(args.lugar.rutaImagen)
+                .fitCenter().into(binding.imagen)
+        }
 
         return binding.root
     }
